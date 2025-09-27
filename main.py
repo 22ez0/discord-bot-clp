@@ -182,7 +182,7 @@ class DiscordBot(commands.Bot):
                 voice_client = channel.guild.voice_client
                 if voice_client and voice_client.channel:
                     current_channel = voice_client.channel
-                    if hasattr(current_channel, 'id') and current_channel.id == VOICE_CHANNEL_ID:
+                    if isinstance(current_channel, discord.VoiceChannel) and current_channel.id == VOICE_CHANNEL_ID:
                         print(f"Já conectado ao canal de voz correto: {channel.name}")
                         if is_reconnect:
                             self.voice_reconnect_attempts = 0  # Reset contador se já conectado
@@ -305,7 +305,7 @@ bot = DiscordBot()
 @app_commands.describe()
 async def url_command(interaction: discord.Interaction):
     """Comando /url para enviar embed com informações do representante"""
-    channel_name = interaction.channel.name if hasattr(interaction.channel, 'name') else 'DM'
+    channel_name = getattr(interaction.channel, 'name', 'DM') if interaction.channel else 'DM'
     print(f" Comando /url executado por {interaction.user.name} no canal {channel_name}")
 
     # Verificar se o canal é o correto
@@ -355,7 +355,7 @@ async def url_command(interaction: discord.Interaction):
 @app_commands.describe()
 async def booster_command(interaction: discord.Interaction):
     """Comando /booster para enviar embed com informações dos boosters"""
-    channel_name = interaction.channel.name if hasattr(interaction.channel, 'name') else 'DM'
+    channel_name = getattr(interaction.channel, 'name', 'DM') if interaction.channel else 'DM'
     print(f"🎉 Comando /booster executado por {interaction.user.name} no canal {channel_name}")
 
     # Verificar se o canal é o correto para boosters
