@@ -1,0 +1,20 @@
+services:
+  - type: worker
+    name: discord-bot
+    env: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: python main.py
+    envVars:
+      - key: BOT_TOKEN
+        sync: false
+      - key: SPECIFIC_CHANNEL_ID
+        value: "1421251054032392222"
+      - key: VOICE_CHANNEL_ID  
+        value: "1421364668546683083"
+      - key: ROLE_ID
+        value: "1421277379149697135"
+      - key: BOOSTER_CHANNEL_ID
+        value: "1421251143085850678"
+      - key: BOOSTER_ROLE_ID
+        value: "1421277205878673518"
