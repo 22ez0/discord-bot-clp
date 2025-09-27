@@ -7,9 +7,33 @@ import logging
 import io
 from urllib.parse import urlparse, parse_qs
 from typing import Optional
+import threading
+from flask import Flask
 
 # Configurar logging
 logging.basicConfig(level=logging.INFO)
+
+# --- SERVIDOR HTTP SIMPLES PARA RENDER ---
+# Isso resolve o problema de porta do Render sem afetar o bot
+app = Flask(__name__)
+
+@app.route('/')
+def health_check():
+    return {'status': 'Bot Discord rodando!', 'message': 'Conectado e funcionando'}, 200
+
+@app.route('/health')
+def health():
+    return {'status': 'healthy', 'bot': 'online'}, 200
+
+def run_flask_server():
+    """Executar servidor Flask em thread separada"""
+    port = int(os.environ.get('PORT', 10000))
+    app.run(host='0.0.0.0', port=port, debug=False, use_reloader=False)
+
+# Iniciar servidor HTTP em thread separada
+flask_thread = threading.Thread(target=run_flask_server, daemon=True)
+flask_thread.start()
+print(f"✅ Servidor HTTP iniciado na porta {os.environ.get('PORT', 10000)}")
 
 # --- CONFIGURAÇÕES DO BOT ---
 # ATENÇÃO: Substitua estes IDs pelos seus IDs reais.
