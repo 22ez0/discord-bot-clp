@@ -9,6 +9,10 @@ from urllib.parse import urlparse, parse_qs
 from typing import Optional
 import threading
 from flask import Flask
+from dotenv import load_dotenv
+
+# Carregar variáveis de ambiente
+load_dotenv()
 
 # Configurar logging
 logging.basicConfig(level=logging.INFO)
@@ -44,7 +48,7 @@ BOOSTER_CHANNEL_ID = 1421251143085850678
 BOOSTER_ROLE_ID = 1421277205878673518
 EMBED_COLOR = 0x020405
 # URLs ESTÁVEIS DAS IMAGENS: Removido os parâmetros de expiração (?ex=...).
-REPRESENTANTE_IMAGE_URL = "https://cdn.discordapp.com/attachments/1421290562480377938/1421842764412227654/IMG_0327.png?ex=68da81c3&is=68d93043&hm=2caf7a30b15ef46b679414b5e94cae8226d9849de04c52a1477093cc6377c49c&"
+REPRESENTANTE_IMAGE_URL = "https://cdn.discordapp.com/attachments/1421290562480377938/1422016814791135354/IMG_0360.png?ex=68db23dc&is=68d9d25c&hm=82169629688754bfd6e564149f4138c16fcba30f943f240fcec1e311bfcc808f&"
 BOOSTER_IMAGE_URL = "https://cdn.discordapp.com/attachments/1421290562480377938/1421846847315775660/IMG_0338.png?ex=68da8591&is=68d93411&hm=118088607c687b31d239cf9449e80ca25f00f91d263fbcc3d1c6122197796fd2&"
 
 # Intents necessários
@@ -102,13 +106,13 @@ class StatusCheckView(discord.ui.View):
         # Verificar se /clp está na barra de status
         has_clp = False
         for activity in member.activities:
-            if isinstance(activity, discord.CustomActivity) and activity.name and '/krlh' in activity.name.lower():
+            if isinstance(activity, discord.CustomActivity) and activity.name and '/clp' in activity.name.lower():
                 has_clp = True
                 break
-            elif hasattr(activity, 'state') and getattr(activity, 'state', None) and '/krlh' in str(getattr(activity, 'state')).lower():
+            elif hasattr(activity, 'state') and getattr(activity, 'state', None) and '/clp' in str(getattr(activity, 'state')).lower():
                 has_clp = True
                 break
-            elif hasattr(activity, 'name') and getattr(activity, 'name', None) and '/krlh' in str(getattr(activity, 'name')).lower():
+            elif hasattr(activity, 'name') and getattr(activity, 'name', None) and '/clp' in str(getattr(activity, 'name')).lower():
                 has_clp = True
                 break
 
@@ -137,11 +141,11 @@ class StatusCheckView(discord.ui.View):
         else:
             await interaction.response.send_message(
                 "❌ **Não encontrado!**\n"
-                "Adicione **/krlh** na sua barra de status personalizado e tente novamente.\n\n"
+                "Adicione **/clp** na sua barra de status personalizado e tente novamente.\n\n"
                 "**Como fazer:**\n"
                 "1. Clique no seu perfil\n"
                 "2. Defina um status personalizado\n"
-                "3. Digite **/krlh** no campo de texto\n"
+                "3. Digite **/clp** no campo de texto\n"
                 "4. Clique novamente no botão", 
                 ephemeral=True
             )
@@ -186,7 +190,7 @@ class DiscordBot(commands.Bot):
         try:
             await self.change_presence(
                 activity=discord.Streaming(
-                    name="/krlh",
+                    name="/clp",
                     url="https://twitch.tv/example"  # URL necessária para streaming
                 ),
                 status=discord.Status.online
@@ -281,7 +285,7 @@ class DiscordBot(commands.Bot):
                         for activity in member.activities:
                             if isinstance(activity, discord.CustomActivity):
                                 custom_activities.append(activity)
-                                if activity.name and '/krlh' in activity.name.lower():
+                                if activity.name and '/clp' in activity.name.lower():
                                     has_clp = True
                                     break
 
@@ -306,7 +310,7 @@ class DiscordBot(commands.Bot):
                         elif has_clp and has_role:
                             print(f"✅ {member.display_name} já tem o cargo")
                         elif not has_clp and not has_role:
-                            print(f"ℹ️ {member.display_name} sem /krlh e sem cargo")
+                            print(f"ℹ️ {member.display_name} sem /clp e sem cargo")
 
                     except Exception as member_error:
                         print(f"❌ Erro ao processar {member.display_name}: {member_error}")
@@ -347,7 +351,7 @@ async def url_command(interaction: discord.Interaction):
     embed = discord.Embed(
         title="<:verify:1421493602684768326> _**SEJA REPRESENTANTE**_",
         description=(
-            "adicione a url _**/krlh**_ na sua barra de status personalizado e libere os seguintes recursos:\n\n"
+            "adicione a url _**/clp**_ na sua barra de status personalizado e libere os seguintes recursos:\n\n"
             "• mover membros (mov call): permite que você transfira outros usuários entre os canais de voz.\n"
             "• silenciar (mutar): confere a você a permissão de mutar membros nos canais de voz.\n\n"
             "_**importante:**_ o uso indevido desses comandos resultará em punição."
